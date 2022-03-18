@@ -108,7 +108,12 @@ class Polynomial:
         return False
 
     def __eq__(self, other):
-        raise NotImplementedError("TODO")
+        if len(self) != len(other):
+            return False
+        for i in range(len(self.terms)):
+            if self[i] != other[i]:
+                return False
+        return True
 
     def __iter__(self):
         raise NotImplementedError("TODO")
@@ -178,3 +183,15 @@ print(polynomial)
 print(tpoly1)
 subbed = polynomial - tpoly1
 print(subbed)
+
+copy_poly = Polynomial(polynomial.terms)
+print(copy_poly[0])
+if polynomial == copy_poly:
+    print("Test 3 passed")
+else:
+    print("Test 3 failed")
+
+if polynomial != tpoly1:
+    print("Test 4 passed")
+else:
+    print("Test 4 failed")
