@@ -86,7 +86,7 @@ class Polynomial:
     def __add__(self, other):
         new = Polynomial(self.terms)
         for term in other.terms:
-            new.append(term)
+            new.add_term(term)
         return new
 
     def __sub__(self, other):
@@ -100,6 +100,16 @@ class Polynomial:
 
     def __getitem__(self, index):
         return self.terms[index]
+
+    def __setitem__(self, key, value):
+        raise NotImplementedError("TODO")
+
+    def __delitem__(self, key):
+        term = self.terms[key]
+        if term.exp != self.degree or term.exp != 0:
+            raise ValueError("Cannot delete a middle degree")
+        self.terms.pop(key)
+        self.numItems -= 1
 
     def __contains__(self, item):
         for term in self.terms:
@@ -122,7 +132,7 @@ class Polynomial:
     def __len__(self):
         return self.numItems
 
-    def append(self, term):
+    def add_term(self, term):
         if term.exp > self.degree + 1:
             raise ValueError("Cannot skip degrees")
 
@@ -147,6 +157,10 @@ class Polynomial:
                 return
 
 
+"""
+Testing code below this line
+"""
+
 test_term = Term(-3, "x")
 term_2 = Term(2, "x", 2)
 term_4 = Term(4, 'x', 2)
@@ -156,9 +170,9 @@ polynomial = Polynomial([test_term, term_2, term_3, term_4])
 print(polynomial)
 print(f"Degree: {polynomial.degree}, L.C: {polynomial.lc}")
 
-polynomial.append(Term(2, 'x', 2))
-polynomial.append(Term(3, 'x', 3))
-polynomial.append(Term(3))
+polynomial.add_term(Term(2, 'x', 2))
+polynomial.add_term(Term(3, 'x', 3))
+polynomial.add_term(Term(3))
 
 print(polynomial)
 print(f"Degree: {polynomial.degree}, L.C: {polynomial.lc}")
@@ -199,3 +213,10 @@ else:
 
 for term in polynomial:
     print(term)
+
+tpoly2 = Polynomial([Term(-3, 'x', 2), Term(4, 'x'), Term(2)])
+del tpoly1[0]
+if tpoly1 == tpoly2:
+    print("Test 5 passed")
+else:
+    print("Test 5 failed")
