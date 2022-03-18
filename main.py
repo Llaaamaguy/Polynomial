@@ -90,7 +90,13 @@ class Polynomial:
         return new
 
     def __sub__(self, other):
-        raise NotImplementedError("TODO")
+        distributed = []
+        for term in other.terms:
+            new_coeff = term.coeff * -1
+            new_term = Term(new_coeff, term.var, term.exp)
+            distributed.append(new_term)
+        distributed_poly = Polynomial(distributed)
+        return self + distributed_poly
 
     def __getitem__(self, index):
         return self.terms[index]
@@ -156,3 +162,19 @@ print(tpoly1)
 
 added = polynomial + tpoly1
 print(added)
+
+copy_term = Term(2, 'x', 2)
+if copy_term == term_2:
+    print("Test 1 passed")
+else:
+    print("Test 1 failed")
+
+if Term(5, 'x', 3) in added:
+    print("Test 2 passed")
+else:
+    print("Test 2 failed")
+
+print(polynomial)
+print(tpoly1)
+subbed = polynomial - tpoly1
+print(subbed)
