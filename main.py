@@ -64,6 +64,9 @@ class Polynomial:
             self.terms.append(v)
         self.numItems = len(self.terms)
 
+        self.degree = self.terms[0].exp
+        self.lc = self.terms[0].coeff
+
     def __str__(self):
         return " + ".join([str(a) for a in self.terms])
 
@@ -90,11 +93,16 @@ class Polynomial:
 
                 i = self.terms.index(selfterm)
                 self.terms = self.terms[:i]+[new_term]+self.terms[i+1:]
+                if i == 0:
+                    self.lc = new_term.coeff
                 return
 
         for i in self.terms:
             if i.exp < term.exp:
                 self.terms.insert(self.terms.index(i), term)
+                if self.terms.index(i) == 1:
+                    self.degree = term.exp
+                    self.lc = term.coeff
                 self.numItems += 1
                 return
 
@@ -105,9 +113,12 @@ term_4 = Term(4, 'x', 2)
 term_3 = Term(4)
 
 polynomial = Polynomial([test_term, term_2, term_3, term_4])
+print(polynomial)
+print(f"Degree: {polynomial.degree}, L.C: {polynomial.lc}")
 
 polynomial.append(Term(2, 'x', 2))
 polynomial.append(Term(3, 'x', 3))
 polynomial.append(Term(3))
 
 print(polynomial)
+print(f"Degree: {polynomial.degree}, L.C: {polynomial.lc}")
