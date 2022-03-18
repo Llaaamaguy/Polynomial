@@ -77,9 +77,27 @@ class Polynomial:
         raise NotImplementedError("TODO")
 
     def __add__(self, other):
-        raise NotImplementedError("TODO")
+        new = Polynomial(self.terms)
+        for term in other.terms:
+            new.append(term)
+        return new
 
     def __sub__(self, other):
+        raise NotImplementedError("TODO")
+
+    def __getitem__(self, item):
+        raise NotImplementedError("TODO")
+
+    def __contains__(self, item):
+        raise NotImplementedError("TODO")
+
+    def __eq__(self, other):
+        raise NotImplementedError("TODO")
+
+    def __iter__(self):
+        raise NotImplementedError("TODO")
+
+    def __len__(self):
         raise NotImplementedError("TODO")
 
     def append(self, term):
@@ -122,3 +140,9 @@ polynomial.append(Term(3))
 
 print(polynomial)
 print(f"Degree: {polynomial.degree}, L.C: {polynomial.lc}")
+
+tpoly1 = Polynomial([Term(2, 'x', 3), Term(-3, 'x', 2), Term(4, 'x'), Term(2)])
+print(tpoly1)
+
+added = polynomial + tpoly1
+print(added)
