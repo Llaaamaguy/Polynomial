@@ -23,6 +23,13 @@ class Term:
         exp_lst = [int(a) for a in str(self.exp)]
         return f"Term({self.coeff}{self.var}{super_num(exp_lst)})"
 
+    def __eq__(self, other):
+        if self.coeff == other.coeff:
+            if self.exp == other.exp:
+                if self.var == other.var:
+                    return True
+        return False
+
 
 class Polynomial:
     def __init__(self, terms):
@@ -85,11 +92,14 @@ class Polynomial:
     def __sub__(self, other):
         raise NotImplementedError("TODO")
 
-    def __getitem__(self, item):
-        raise NotImplementedError("TODO")
+    def __getitem__(self, index):
+        return self.terms[index]
 
     def __contains__(self, item):
-        raise NotImplementedError("TODO")
+        for term in self.terms:
+            if term == item:
+                return True
+        return False
 
     def __eq__(self, other):
         raise NotImplementedError("TODO")
@@ -98,7 +108,7 @@ class Polynomial:
         raise NotImplementedError("TODO")
 
     def __len__(self):
-        raise NotImplementedError("TODO")
+        return self.numItems
 
     def append(self, term):
         if term.exp > self.degree + 1:
