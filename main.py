@@ -116,7 +116,8 @@ class Polynomial:
         return True
 
     def __iter__(self):
-        raise NotImplementedError("TODO")
+        for term in self.terms:
+            yield term
 
     def __len__(self):
         return self.numItems
@@ -195,3 +196,6 @@ if polynomial != tpoly1:
     print("Test 4 passed")
 else:
     print("Test 4 failed")
+
+for term in polynomial:
+    print(term)
