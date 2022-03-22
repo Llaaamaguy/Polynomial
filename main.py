@@ -45,9 +45,6 @@ class Polynomial:
                 self.lc = term.coeff
 
         alldegrees.sort()
-        for i in range(len(alldegrees)):
-            if alldegrees[i] != i:
-                raise ValueError("Cannot skip degrees")
 
         terms_dict = {}
         for term in terms:
@@ -81,7 +78,14 @@ class Polynomial:
         return "Polynomial(" + " + ".join([str(a) for a in self.terms]) + ")"
 
     def __mul__(self, other):
-        raise NotImplementedError("TODO")
+        new = Polynomial([Term(0,'x')])
+        for selfTerm in self.terms:
+            for otherTerm in other.terms:
+                new.add_term(Term(selfTerm.coeff * otherTerm.coeff, selfTerm.var, selfTerm.exp + otherTerm.exp))
+                print(Term(selfTerm.coeff * otherTerm.coeff, selfTerm.var, selfTerm.exp + otherTerm.exp))
+#sorry for the one liner
+
+        return new
 
     def __add__(self, other):
         new = Polynomial(self.terms)
@@ -106,7 +110,7 @@ class Polynomial:
 
     def __delitem__(self, key):
         term = self.terms[key]
-        if term.exp != self.degree or term.exp != 0:
+        if term.exp != self.degree and term.exp != 0:
             raise ValueError("Cannot delete a middle degree")
         self.terms.pop(key)
         self.numItems -= 1
@@ -133,16 +137,13 @@ class Polynomial:
         return self.numItems
 
     def add_term(self, term):
-        if term.exp > self.degree + 1:
-            raise ValueError("Cannot skip degrees")
-
         for selfterm in self.terms:
             if selfterm.exp == term.exp:
                 new_coeff = selfterm.coeff + term.coeff
                 new_term = Term(new_coeff, selfterm.var, selfterm.exp)
 
                 i = self.terms.index(selfterm)
-                self.terms = self.terms[:i]+[new_term]+self.terms[i+1:]
+                self.terms = self.terms[:i] + [new_term] + self.terms[i + 1:]
                 if i == 0:
                     self.lc = new_term.coeff
                 return
@@ -155,8 +156,6 @@ class Polynomial:
                     self.lc = term.coeff
                 self.numItems += 1
                 return
-
-
 """
 Testing code below this line
 """
@@ -220,3 +219,13 @@ if tpoly1 == tpoly2:
     print("Test 5 passed")
 else:
     print("Test 5 failed")
+
+
+#Starting my tests
+tpoly3 = Polynomial([Term(2,'x'),Term(2)])
+tpoly4 = Polynomial([Term(3,'x'),Term(3)])
+tpoly5 = Polynomial([Term(6,'x',2),Term(12,'x'),Term(6)])
+print(tpoly3*tpoly4)
+#if tpoly3 * tpoly4 == tpoly5:
+	#print("Test 6 passed")
+
