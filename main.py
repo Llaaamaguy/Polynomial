@@ -87,6 +87,14 @@ class Polynomial:
 
         return new
 
+    def __truediv__(self, other):
+        if len(other) == 2:
+            if other[0].exp == 1 and other[0].coeff == 1:
+                if other[1].exp == 0 and other[1].var == "":
+                    return self._synth_div(other, return_remainder=False)
+
+        raise NotImplementedError("Can only do synthetic division")
+
     def __add__(self, other):
         new = Polynomial(self.terms)
         for term in other.terms:
@@ -136,6 +144,36 @@ class Polynomial:
     def __len__(self):
         return self.numItems
 
+    def _synth_div(self, other, return_remainder=True):
+        if other[1].coeff < 1:
+            multiplier = abs(other[1].coeff)
+        else:
+            multiplier = other[1].coeff * -1
+        coeffs = [term.coeff for term in self.terms]
+        final = [coeffs[0]]
+        coeffs.pop(0)
+
+        for i in coeffs:
+            final.append(i + (final[-1] * multiplier))
+
+        newDeg = self.degree - 1
+        remainder = final[-1]
+        final.pop(-1)
+
+        newTerms = []
+        for i in final:
+            if newDeg != 0:
+                newTerms.append(Term(i, 'x', newDeg))
+                newDeg -= 1
+            else:
+                newTerms.append(Term(i))
+
+        newPoly = Polynomial(newTerms)
+        if return_remainder:
+            return newPoly, remainder
+        else:
+            return newPoly
+
     def add_term(self, term):
         for selfterm in self.terms:
             if selfterm.exp == term.exp:
@@ -156,9 +194,21 @@ class Polynomial:
                     self.lc = term.coeff
                 self.numItems += 1
                 return
+
+    def is_factor(self, other):
+        if len(other) == 2:
+            if other[0].exp == 1 and other[0].coeff == 1:
+                if other[1].exp == 0 and other[1].var == "":
+                    _, remainder = self._synth_div(other, return_remainder=True)
+                    if remainder == 0:
+                        return True
+                    return False
+        raise NotImplementedError("Can only perform synthetic division")
+
+
 """
 Testing code below this line
-"""
+
 
 test_term = Term(-3, "x")
 term_2 = Term(2, "x", 2)
@@ -219,6 +269,11 @@ if tpoly1 == tpoly2:
     print("Test 5 passed")
 else:
     print("Test 5 failed")
+"""
+
+div1 = Polynomial([Term(2, 'x', 2), Term(3, 'x'), Term(4)])
+div2 = Polynomial([Term(1, 'x'), Term(-4)])
+print(div1//div2)
 
 
 #Starting my tests
