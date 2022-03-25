@@ -91,7 +91,10 @@ class Polynomial:
         if len(other) == 2:
             if other[0].exp == 1 and other[0].coeff == 1:
                 if other[1].exp == 0 and other[1].var == "":
+                    # Do synthetic division if the equation is in the form P(x) / x-a
                     return self._synth_div(other, return_remainder=False)
+
+        # Do regular division if the equation is not in the form P(x) / x-a
 
         raise NotImplementedError("Can only do synthetic division")
 
@@ -153,8 +156,7 @@ class Polynomial:
         final = [coeffs[0]]
         coeffs.pop(0)
 
-        for i in coeffs:
-            final.append(i + (final[-1] * multiplier))
+        final.append((i + (final[-1] * multiplier)) for i in coeffs)
 
         newDeg = self.degree - 1
         remainder = final[-1]
@@ -271,10 +273,12 @@ else:
     print("Test 5 failed")
 """
 
-div1 = Polynomial([Term(2, 'x', 2), Term(3, 'x'), Term(4)])
-div2 = Polynomial([Term(1, 'x'), Term(-4)])
-print(div1//div2)
+div1 = Polynomial([Term(1, 'x', 3), Term(-2, 'x', 2), Term(-14, 'x'), Term(-3)])
+div2 = Polynomial([Term(1, 'x'), Term(3)])
+print(div1/div2)
+print(div1.is_factor(div2))
 
+print("\n")
 
 #Starting my tests
 tpoly3 = Polynomial([Term(2,'x'),Term(2)])
