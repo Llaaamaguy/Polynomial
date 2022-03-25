@@ -34,6 +34,7 @@ class Term:
         new_coeff = self.coeff * other.coeff
         new_exp = self.exp + other.exp
         return Term(new_coeff, self.var, new_exp)
+				
 
 
 class Polynomial:
@@ -83,13 +84,10 @@ class Polynomial:
         return "Polynomial(" + " + ".join([str(a) for a in self.terms]) + ")"
 
     def __mul__(self, other):
-        new = Polynomial([Term(0,'x')])
+        new = Polynomial([Term(0),Term(0,'x')])
         for selfTerm in self.terms:
             for otherTerm in other.terms:
-                new.add_term(Term(selfTerm.coeff * otherTerm.coeff, selfTerm.var, selfTerm.exp + otherTerm.exp))
-                print(Term(selfTerm.coeff * otherTerm.coeff, selfTerm.var, selfTerm.exp + otherTerm.exp))
-#sorry for the one liner
-
+                new.add_term(otherTerm * selfTerm)
         return new
 
     def __truediv__(self, other):
@@ -290,8 +288,8 @@ tpoly3 = Polynomial([Term(2,'x'),Term(2)])
 tpoly4 = Polynomial([Term(3,'x'),Term(3)])
 tpoly5 = Polynomial([Term(6,'x',2),Term(12,'x'),Term(6)])
 print(tpoly3*tpoly4)
-#if tpoly3 * tpoly4 == tpoly5:
-	#print("Test 6 passed")
+if tpoly3 * tpoly4 == tpoly5:
+	print("Test 6 passed")
 
 
 print(Term(3, 'x', 2)*Term(-4, 'x', 3))
