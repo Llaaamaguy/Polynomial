@@ -34,7 +34,9 @@ class Term:
         new_coeff = self.coeff * other.coeff
         new_exp = self.exp + other.exp
         return Term(new_coeff, self.var, new_exp)
-				
+
+    def __truediv__(self,other):
+        return Term(self.coeff / other.coeff, self.var, self.exp - other.exp)
 
 
 class Polynomial:
