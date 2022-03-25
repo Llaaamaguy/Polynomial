@@ -30,6 +30,11 @@ class Term:
                     return True
         return False
 
+    def __mul__(self, other):
+        new_coeff = self.coeff * other.coeff
+        new_exp = self.exp + other.exp
+        return Term(new_coeff, self.var, new_exp)
+
 
 class Polynomial:
     def __init__(self, terms):
@@ -288,3 +293,5 @@ print(tpoly3*tpoly4)
 #if tpoly3 * tpoly4 == tpoly5:
 	#print("Test 6 passed")
 
+
+print(Term(3, 'x', 2)*Term(-4, 'x', 3))
